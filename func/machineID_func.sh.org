@@ -1,0 +1,64 @@
+#!/bin/bash
+
+###define function
+
+function start() {
+echo "cloudstack-api start --id ${MACHINEID}"
+}
+
+function stop() {
+echo "cloudstack-api stop --id ${MACHINEID}"
+}
+
+function destroyVirtualMachine() {
+echo "cloudstack-api destroyVirtualMachine --id ${MACHINEID}"
+}
+
+#spec miteigi
+function changeService() {
+echo "cloudstack-api changeServiceForVirtualMachine --id ${MACHINEID} --serviceofferingid ${spec}"
+}
+
+#deleteTemplate TEMPLATEID miteigi
+function deleteTemplate() {
+echo "cloudstack-api deleteTemplate --id ${TEMPLATEID}"
+}
+
+#deleteSnapshot SNAPSHOTID miteigi
+function deleteSnapshot() {
+echo "cloudstack-api deleteSnapshot --id ${SNAPSHOTID}"
+}
+
+function listServiceOfferings() {
+echo "cloudstack-api listServiceOfferings -t id,name,cpunumber,memory"
+}
+
+
+###---exec function---
+
+#execfunc=$1
+execfunc=start
+
+
+###---exec loop---
+
+cnt=0
+MACHINEIDLIST=$HOME/env/machineidlist
+cntwc=$(wc -l < $MACHINEIDLIST)
+
+echo ---cntwc---
+    echo $cntwc
+
+echo ---exec loop---
+
+while [ $cnt -lt $cntwc ] 
+do
+    cnt=`expr $cnt + 1`
+    echo $cnt
+    MACHINEID=$(sed -n ${cnt}p $MACHINEIDLIST)
+#    echo $MACHINEID
+
+###
+$execfunc
+
+done 
